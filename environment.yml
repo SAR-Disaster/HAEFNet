@@ -1,0 +1,8 @@
+name: HAEFNet
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - mintpy
+prefix: /home/yukun/miniconda3/envs/HAEFNet
