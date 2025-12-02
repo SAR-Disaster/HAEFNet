@@ -1,0 +1,91 @@
+data:
+  # root_dir: <data_root>
+  root_dir: /home/yukun/codes/Multimodal_paper2/HAEFNet/data/multimodal-landslide-dataset
+  train_list: train.txt
+  val_list: val.txt
+  split:
+    val_ratio: 0.2
+    seed: 3407
+modalities:
+  use_dem: true
+  use_insar_vel: true
+  use_rgb: true
+model:
+  backbone: swin_tiny
+  drop_path_rate: 0.2
+  drop_rate: 0.0
+  gem_geo_prior_weight: 0
+  gem_prototype_dim: 20
+  modality_dims:
+    dem: 3
+    insar_vel: 3
+    rgb: 3
+  modality_norms:
+    dem:
+      max: 5749.44482421875
+      mean: 3783.76513671875
+      min: 548.5
+      std: 967.0396728515625
+    insar_vel:
+      max: 0.1381572037935257
+      mean: -0.006850511766970158
+      min: -0.33521831035614014
+      std: 0.014505097642540932
+    rgb:
+      band1:
+        max: 15732.0
+        mean: 1052.614293866453
+        min: 0.0
+        std: 672.6658132572438
+      band2:
+        max: 15832.0
+        mean: 1021.5029089767321
+        min: 1.0
+        std: 546.432023170618
+      band3:
+        max: 16256.0
+        mean: 704.6330336680454
+        min: 0.0
+        std: 511.3952055022167
+  n_heads: 8
+  num_classes: 2
+  num_modalities: 3
+  pretrained: true
+  prob_fusion: product
+  type: haefnet
+  use_evidential_fusion: true
+  use_mrg: true
+  use_aux_head: false
+prediction: {}
+training:
+  batch_size: 8
+  ckpt_dir: checkpoints/
+  learning_rate: 1.0e-05
+  log_dir: logs/
+  loss:
+    beta_reg:
+      weight: 0.001
+    fuse_consistency:
+      weight: 0.05
+    ignore_index: 255
+    modal:
+      weight: 1
+    task:
+      ce_weight: 1.0
+      dice_weight: 1.0
+      name: ce_dice
+    type: composite
+    uncertainty:
+      target: 0.3
+      weight: 0.02
+  name: HAEFNet
+  num_epochs: 200
+  num_workers: 8
+  task_name: exp
+  save_interval: 5
+  scheduler:
+    T_max: 50000
+    eta_min: 1e-7
+    type: cos
+    warmup_iterations: 2000
+  weight_decay: 0.05
